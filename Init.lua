@@ -84,8 +84,15 @@ if not tryStep("create plugin addon", function()
 end) then return end
 
 local DEFAULTS = {
-    brackets = { enabled = true, size = 10, thickness = 2 },
-    theme    = { applied = false },
+    brackets     = { enabled = true, size = 10, thickness = 2 },
+    theme        = { applied = false },
+    questlog     = {
+        x = nil, y = nil, w = 680, h = 480, detailW = 240, filter = "all",
+    },
+    questtracker = {
+        x = nil, y = nil, w = 220, h = 300,
+        maxQuests = 10, enabled = true, showZoneOnly = false, alpha = 0.85,
+    },
 }
 
 local function deepCopy(src)
@@ -125,6 +132,9 @@ function WUI:Init()
             table.insert(ns.errors, ("[RegisterPlugin] %s"):format(err or "?"))
         end
     end
+
+    if ns.QuestLog    and ns.QuestLog.Init    then ns.QuestLog:Init()    end
+    if ns.QuestTracker and ns.QuestTracker.Init then ns.QuestTracker:Init() end
 
     self:RegisterEvent("PLAYER_ENTERING_WORLD")
     self:Print(("v%s loaded."):format(self.version or "?"))

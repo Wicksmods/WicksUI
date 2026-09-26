@@ -93,6 +93,98 @@ function ns.AddOptions()
                 },
             },
 
+            quests = {
+                order = 15,
+                type  = "group",
+                name  = "Quest Log & Tracker",
+                inline = true,
+                args = {
+                    trackerEnabled = {
+                        order = 1,
+                        type  = "toggle",
+                        name  = "Show quest tracker",
+                        desc  = "Display the Wick quest tracker HUD on login. Replaces Blizzard's default watch frame.",
+                        get   = function() return WUI.db.questtracker.enabled end,
+                        set   = function(_, v)
+                            WUI.db.questtracker.enabled = v
+                            if v then
+                                if ns.QuestTracker then ns.QuestTracker:Show() end
+                            else
+                                if ns.QuestTracker then ns.QuestTracker:Hide() end
+                            end
+                        end,
+                    },
+                    zoneOnly = {
+                        order = 2,
+                        type  = "toggle",
+                        name  = "Show current zone only",
+                        desc  = "Tracker only shows quests from your current zone.",
+                        get   = function() return WUI.db.questtracker.showZoneOnly end,
+                        set   = function(_, v)
+                            WUI.db.questtracker.showZoneOnly = v
+                            if ns.QuestTracker then ns.QuestTracker:Refresh() end
+                        end,
+                    },
+                    maxQuests = {
+                        order = 3,
+                        type  = "range",
+                        name  = "Max tracked quests",
+                        desc  = "Maximum number of quests shown in the tracker HUD.",
+                        min   = 1, max = 20, step = 1,
+                        get   = function() return WUI.db.questtracker.maxQuests end,
+                        set   = function(_, v)
+                            WUI.db.questtracker.maxQuests = v
+                            if ns.QuestTracker then ns.QuestTracker:Refresh() end
+                        end,
+                    },
+                    trackerAlpha = {
+                        order = 4,
+                        type  = "range",
+                        name  = "Tracker opacity",
+                        desc  = "Transparency of the quest tracker HUD.",
+                        min   = 0.2, max = 1.0, step = 0.05,
+                        isPercent = true,
+                        get   = function() return WUI.db.questtracker.alpha end,
+                        set   = function(_, v)
+                            WUI.db.questtracker.alpha = v
+                            if ns.QuestTracker and ns.QuestTracker.frame then
+                                ns.QuestTracker.frame:SetAlpha(v)
+                            end
+                        end,
+                    },
+                    openLog = {
+                        order = 5,
+                        type  = "execute",
+                        name  = "Open quest log",
+                        desc  = "Opens Wick's Quest Log panel.",
+                        func  = function()
+                            if ns.QuestLog then ns.QuestLog:Show() end
+                        end,
+                    },
+                    resetPositions = {
+                        order = 6,
+                        type  = "execute",
+                        name  = "Reset positions",
+                        desc  = "Resets both the quest log and tracker to their default screen positions.",
+                        func  = function()
+                            WUI.db.questlog.x     = nil
+                            WUI.db.questlog.y     = nil
+                            WUI.db.questtracker.x = nil
+                            WUI.db.questtracker.y = nil
+                            -- Rebuild on next open
+                            if ns.QuestLog and ns.QuestLog.frame then
+                                ns.QuestLog.frame:ClearAllPoints()
+                                ns.QuestLog.frame:SetPoint("CENTER", UIParent, "CENTER", 0, 40)
+                            end
+                            if ns.QuestTracker and ns.QuestTracker.frame then
+                                ns.QuestTracker.frame:ClearAllPoints()
+                                ns.QuestTracker.frame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -20, -200)
+                            end
+                        end,
+                    },
+                },
+            },
+
             theme = {
                 order = 20,
                 type  = "group",

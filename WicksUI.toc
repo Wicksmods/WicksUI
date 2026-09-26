@@ -2,7 +2,7 @@
 ## Title: |cffD4C8A1Wick's|r |cff4FC778UI|r
 ## Notes: Theme for ElvUI — Wick brand palette and L-bracket panel chrome.
 ## Author: Wick
-## Version: 0.2.1
+## Version: 0.3.0
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## SavedVariables: WicksUIDB
@@ -13,4 +13,6 @@
 Init.lua
 Theme.lua
 Brackets.lua
+QuestLog.lua
+QuestTracker.lua
 Options.lua
